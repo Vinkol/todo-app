@@ -9,15 +9,20 @@ const App = () => {
   const [Id, setId] = useState(1)
   const [filter, setFilter] = useState('All')
 
-  const addTask = (description) => {
+  const addTask = (description, min, sec) => {
     const newTask = {
       id: Id,
       label: description,
       checked: false,
       createdDate: Date.now(),
+      timeLeft: min * 60 + sec,
     }
     setTasks([...tasks, newTask])
     setId(Id + 1)
+  }
+
+  const updateTimer = (id, timeLeft) => {
+    setTasks(tasks.map((task) => (task.id === id ? { ...task, timeLeft } : task)))
   }
 
   const CompletedTask = (id) => {
@@ -54,6 +59,7 @@ const App = () => {
           onCompletedTask={CompletedTask}
           onDeleteTask={DeleteTask}
           onEditTask={EditTask}
+          updateTimer={updateTimer}
         />
         <Footer
           CountTask={CountTask}

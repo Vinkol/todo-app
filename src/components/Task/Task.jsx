@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 
-const Task = ({ todo, CompletedCurrentTask, DeleteCurrentTask, EditCurrentTask }) => {
+import Timer from '../Timer/Timer'
+
+const Task = ({ todo, CompletedCurrentTask, DeleteCurrentTask, EditCurrentTask, updateTimer }) => {
   const [editing, setEditing] = useState(false)
   const [value, setValue] = useState(todo.label)
   const [timeAgo, setTimeAgo] = useState('')
@@ -41,6 +43,9 @@ const Task = ({ todo, CompletedCurrentTask, DeleteCurrentTask, EditCurrentTask }
         />
         <label>
           <span className="description">{todo.label}</span>
+          <span className="timer">
+            <Timer data={{ min: 5, sec: 0, id: todo.id }} updateTimer={updateTimer} />
+          </span>
           <span className="created">{timeAgo}</span>
         </label>
         <button className="icon icon-edit" onClick={() => setEditing((prevEditing) => !prevEditing)}></button>
@@ -61,8 +66,10 @@ Task.defaultProps = {
     label: 'New Task',
     checked: false,
     createdDate: Date.now(),
+    timeLeft: 300,
   },
   CompletedCurrentTask: () => {},
+  updateTimer: () => {},
 }
 
 Task.propTypes = {
@@ -71,10 +78,12 @@ Task.propTypes = {
     label: PropTypes.string.isRequired,
     checked: PropTypes.bool.isRequired,
     createdDate: PropTypes.number.isRequired,
+    timeLeft: PropTypes.number,
   }).isRequired,
   CompletedCurrentTask: PropTypes.func.isRequired,
   DeleteCurrentTask: PropTypes.func.isRequired,
   EditCurrentTask: PropTypes.func.isRequired,
+  updateTimer: PropTypes.func.isRequired,
 }
 
 export default Task
