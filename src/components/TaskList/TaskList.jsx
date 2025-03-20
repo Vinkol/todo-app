@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Task from '../Task/Task'
 
-const TaskList = ({ todos, onCompletedTask, onDeleteTask, onEditTask, updateTimer }) => {
+const TaskList = ({ todos, onCompletedTask, onDeleteTask, onEditTask, updateTimer, toggleTimer }) => {
   return (
     <ul className="todo-list">
       {todos.map((todo) => (
@@ -11,6 +11,7 @@ const TaskList = ({ todos, onCompletedTask, onDeleteTask, onEditTask, updateTime
           key={todo.id}
           todo={todo}
           updateTimer={updateTimer}
+          toggleTimer={toggleTimer}
           CompletedCurrentTask={onCompletedTask}
           DeleteCurrentTask={onDeleteTask}
           EditCurrentTask={onEditTask}
@@ -34,7 +35,8 @@ TaskList.propTypes = {
       id: PropTypes.number.isRequired,
       label: PropTypes.string.isRequired,
       checked: PropTypes.bool.isRequired,
-      timeLeft: PropTypes.number,
+      min: PropTypes.number.isRequired,
+      sec: PropTypes.number.isRequired,
     })
   ).isRequired,
   onCompletedTask: PropTypes.func.isRequired,

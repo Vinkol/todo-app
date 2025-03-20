@@ -6,23 +6,29 @@ import TaskList from '../TaskList/TaskList'
 
 const App = () => {
   const [tasks, setTasks] = useState([])
-  const [Id, setId] = useState(1)
+  const [id, setId] = useState(1)
   const [filter, setFilter] = useState('All')
 
   const addTask = (description, min, sec) => {
     const newTask = {
-      id: Id,
+      id: id,
       label: description,
       checked: false,
       createdDate: Date.now(),
-      timeLeft: min * 60 + sec,
+      min: min,
+      sec: sec,
+      isRunning: false,
     }
     setTasks([...tasks, newTask])
-    setId(Id + 1)
+    setId(id + 1)
   }
 
-  const updateTimer = (id, timeLeft) => {
-    setTasks(tasks.map((task) => (task.id === id ? { ...task, timeLeft } : task)))
+  const updateTimer = (id, min, sec, isRunning) => {
+    setTasks((tasks) => tasks.map((task) => (task.id === id ? { ...task, min, sec, isRunning } : task)))
+  }
+
+  const toggleTimer = (id, state) => {
+    setTasks((prevTasks) => prevTasks.map((task) => (task.id === id ? { ...task, isRunning: state } : task)))
   }
 
   const CompletedTask = (id) => {
@@ -60,6 +66,7 @@ const App = () => {
           onDeleteTask={DeleteTask}
           onEditTask={EditTask}
           updateTimer={updateTimer}
+          toggleTimer={toggleTimer}
         />
         <Footer
           CountTask={CountTask}

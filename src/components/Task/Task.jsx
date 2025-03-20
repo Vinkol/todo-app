@@ -5,15 +5,21 @@ import { enUS } from 'date-fns/locale'
 
 import Timer from '../Timer/Timer'
 
-const Task = ({ todo, CompletedCurrentTask, DeleteCurrentTask, EditCurrentTask, updateTimer }) => {
+const Task = ({ todo, CompletedCurrentTask, DeleteCurrentTask, EditCurrentTask, updateTimer, toggleTimer }) => {
   const [editing, setEditing] = useState(false)
   const [value, setValue] = useState(todo.label)
   const [timeAgo, setTimeAgo] = useState('')
 
   const { checked, id, createdDate } = todo
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
+  useEffect(() => {
+    if (checked) {
+      updateTimer(id, 0, 0)
+    }
+  }, [checked, id, updateTimer])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
     EditCurrentTask(todo.id, value)
     setValue(value)
     setEditing(false)
@@ -33,7 +39,7 @@ const Task = ({ todo, CompletedCurrentTask, DeleteCurrentTask, EditCurrentTask, 
   }, [createdDate])
 
   return (
-    <li className={checked ? 'completed' : editing ? 'editing' : null}>
+    <li className={checked ? 'completed' : editing ? 'editing' : ''}>
       <div className="view">
         <input
           className="toggle"
@@ -44,7 +50,14 @@ const Task = ({ todo, CompletedCurrentTask, DeleteCurrentTask, EditCurrentTask, 
         <label>
           <span className="description">{todo.label}</span>
           <span className="timer">
-            <Timer data={{ min: 5, sec: 0, id: todo.id }} updateTimer={updateTimer} />
+            <Timer
+              id={todo.id}
+              min={todo.min}
+              sec={todo.sec}
+              isRunning={todo.isRunning}
+              updateTimer={updateTimer}
+              toggleTimer={toggleTimer}
+            />
           </span>
           <span className="created">{timeAgo}</span>
         </label>
@@ -66,7 +79,8 @@ Task.defaultProps = {
     label: 'New Task',
     checked: false,
     createdDate: Date.now(),
-    timeLeft: 300,
+    min: 0,
+    sec: 0,
   },
   CompletedCurrentTask: () => {},
   updateTimer: () => {},
@@ -78,7 +92,6 @@ Task.propTypes = {
     label: PropTypes.string.isRequired,
     checked: PropTypes.bool.isRequired,
     createdDate: PropTypes.number.isRequired,
-    timeLeft: PropTypes.number,
   }).isRequired,
   CompletedCurrentTask: PropTypes.func.isRequired,
   DeleteCurrentTask: PropTypes.func.isRequired,
