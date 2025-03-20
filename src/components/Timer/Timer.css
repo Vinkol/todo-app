@@ -4,12 +4,16 @@
   display: flex;
 }
 
-.todo-list li.completed label .timer-wrapper {
+.time {
+  margin-top: 4px;
+}
+
+.todo-list li.completed label .timer {
   color: #cdcdcd;
   text-decoration: line-through;
 }
 
-.todo-list li label .timer-wrapper {
+.todo-list li label .timer {
   align-items: center;
   color: grey;
   display: flex;
@@ -31,11 +35,11 @@
 
 .todo-list li .icon-pause {
   margin: 0 5px;
+  margin-bottom: 1px;
 }
 
 .todo-list li .icon-play {
   margin: 0;
-  font-size: 20px;
 }
 
 .icon-pause:after {
