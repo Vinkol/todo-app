@@ -11,8 +11,7 @@
 - React
 - JavaScript (ES6+)
 - HTML / CSS
-- Vite
-- 
+
 ## Демо
 🔗 [Посмотреть проект на Vercel](https://todo-app-rosy-three-17.vercel.app/)
 
